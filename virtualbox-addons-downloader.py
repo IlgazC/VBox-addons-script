@@ -21,6 +21,12 @@ def get_downloads_folder():
     elif os.name == 'posix':
         # Unix/Linux/Mac OS
         downloads_folder = os.path.join(os.path.expanduser("~"), 'Downloads')
+        import subprocess
+        vbox_command = ["VBoxManage", "--version"]
+        process = subprocess.Popen(vbox_command, stdout=subprocess.PIPE)
+        output, error = process.communicate()
+        vbox_version = output.decode().strip()
+        host_version = 
     elif os.name == 'nt':
         # Windows
         downloads_folder = os.path.join(os.path.expanduser("~"), 'Downloads')
@@ -32,7 +38,7 @@ def get_downloads_folder():
 
 def get_user_input():
     while True:
-        version_input = input("Enter the desired VirtualBox version in the format xx.xx.xx or xx.xx.xx_BETA(x): ").strip()
+        version_input = input("Enter the desired VirtualBox version in the format xx.xx.xx or xx.xx.xx_BETA(vbox_version): ").strip()
         if re.match(r'^\d{1,2}\.\d{1,2}\.\d{1,2}(_BETA\d+)?$', version_input):
             version_parts = version_input.split('_BETA')
             version_numbers = [str(int(segment)) for segment in version_parts[0].split('.')]
